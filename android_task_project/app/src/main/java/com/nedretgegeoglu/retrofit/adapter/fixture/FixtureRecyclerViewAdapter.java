@@ -9,8 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.nedretgegeoglu.retrofit.R;
-import com.nedretgegeoglu.retrofit.helpers.image.ImageHelper;
 import com.nedretgegeoglu.retrofit.model.fixtures.ResponseModel;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class FixtureRecyclerViewAdapter extends RecyclerView.Adapter<FixtureRecyclerViewAdapter.FixtureRowHolder> {
@@ -42,17 +43,19 @@ public class FixtureRecyclerViewAdapter extends RecyclerView.Adapter<FixtureRecy
         TextView homeTeamName;
         TextView awayTeamName;
         TextView score;
+        ImageView homeTeamLogo;
+        ImageView awayTeamLogo;
 
         public FixtureRowHolder(@NonNull View itemView) { super(itemView); }
         public void bind(ResponseModel responseModel, int position) {
             homeTeamName= itemView.findViewById(R.id.homeTeamName);
             awayTeamName= itemView.findViewById(R.id.awayTeamName);
             score= itemView.findViewById(R.id.score);
+            homeTeamLogo = itemView.findViewById(R.id.homeTeamLogo);
+            awayTeamLogo = itemView.findViewById(R.id.awayTeamLogo);
 
-            new ImageHelper((ImageView) itemView.findViewById(R.id.homeTeamLogo))
-                    .execute(responseModel.getTeams().getHome().getLogo());
-            new ImageHelper((ImageView) itemView.findViewById(R.id.awayTeamLogo))
-                    .execute(responseModel.getTeams().getAway().getLogo());
+            Picasso.get().load(responseModel.getTeams().getHome().getLogo()).into(homeTeamLogo);
+            Picasso.get().load(responseModel.getTeams().getAway().getLogo()).into(awayTeamLogo);
 
             homeTeamName.setText(responseModel.getTeams().getHome().getName());
             awayTeamName.setText(responseModel.getTeams().getAway().getName());
